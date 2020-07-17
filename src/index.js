@@ -153,7 +153,7 @@ class GameScene extends Phaser.Scene {
     // let socket = io('https://floating-spire-65360.herokuapp.com/');
 
     // Flags
-    let gameStart = false, isTimeRunning = false;
+    let gameStart = true, isTimeRunning = false; // TODO: change gameStart to falsey, only truthy for testing
 
     // Styling
     const style = {
@@ -169,8 +169,8 @@ class GameScene extends Phaser.Scene {
     // let timeStartTGO = this.add.text(((CANVAS_WIDTH/2) - 100), 0, `Starts in`);
     // let wpmTGO = this.add.text(1150, 0, 'WPM: -', { fontSize: '30px' });
     // let userInputTGO = this.add.text(0, 300, '', style);
-    let timeStartTGO = {}, wpmTGO = {}, userInputTGO = {};
-    addTGO(this, timeStartTGO, wpmTGO, userInputTGO);
+    // // let timeStartTGO = {}, wpmTGO = {}, userInputTGO = {};
+    let [timeStartTGO, wpmTGO, userInputTGO] = addTGO(this, timeStartTGO, wpmTGO, userInputTGO);
 
     // Image Game Objects
     let car = this.add.image(50, 500, 'car-pink');
@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene {
 
         let secondsSinceGameStart = 0;
         setInterval(() => {
-          console.log(`setInterval() with ${secondsSinceGameStart} seconds passed since game start`);
+          // console.log(`setInterval() with ${secondsSinceGameStart} seconds passed since game start`);
           // Update WPM
           if (gameStart) {
             secondsSinceGameStart += 1
@@ -203,7 +203,7 @@ class GameScene extends Phaser.Scene {
             wpmTGO.setText(`WPM: ${wpm}`);
           }
 
-          // Update Timer
+          // Update Countdown Timer
           if (isTimeRunning) {
             if (secondsUntilStart > 0) {
               secondsUntilStart -= 1;
@@ -274,8 +274,14 @@ class GameScene extends Phaser.Scene {
     const maxDisplayUserInputSize = 20;
     let charIndex = 0;
     let firstIncorrect = { flag: false, index: 0 };
+    let minDeleteIndex = 0;
     // *Must use document.addEventListener, instead of Phaser's keyboard.on(), because it handles fast typing elegantly
     document.addEventListener('keydown', (event) => {
+      console.log(`key:${event.key}`);
+      console.log('BEFORE');
+      console.log(`charIndex:${charIndex}`);
+      console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
+      console.log(`minDeleteIndex:${minDeleteIndex}`);
       let userKeyInput = event.key;
       
       // Only accept keyboard input of letters, numbers, and special characters
@@ -287,25 +293,30 @@ class GameScene extends Phaser.Scene {
           userInputTGO.setText(str);
 
           // Update variables neccessary for tracking correctness
-          if (charIndex > 0) { charIndex -= 1; } // prevents Out of Bounds
-          if (firstIncorrect.flag === false) { firstIncorrect.index -= 1; }
+          if (charIndex > 0 && charIndex > minDeleteIndex) { charIndex -= 1; } // prevents Out of Bounds
+          if (firstIncorrect.flag === false && firstIncorrect.index > minDeleteIndex) { firstIncorrect.index -= 1; }
         } else {
           if(userKeyInput === ' ') { event.preventDefault(); }; // prevents space from scrolling page
           // Write user's input to screen
           userInputTGO.setText(userInputTGO.text + userKeyInput);
 
-          // Splice beginning input for QoL
-          if (userInputTGO.text.length > maxDisplayUserInputSize) {
-            let str = userInputTGO.text;
-            str = str.substring(1, str.length);
-            userInputTGO.setText(str);
-          }
+          // // Splice beginning input for QoL
+          // if (userInputTGO.text.length > maxDisplayUserInputSize) {
+          //   let str = userInputTGO.text;
+          //   str = str.substring(1, str.length);
+          //   userInputTGO.setText(str);
+          // }
 
           // Did user type the correct letter AND type in the right place?
           if (
             userKeyInput === sentence[charIndex]
-            && charIndex === firstIncorrect.index
+            // && charIndex === firstIncorrect.index
+            && charIndex <= firstIncorrect.index
           ) { // Correct user input
+            if (userKeyInput === ' ') {
+              userInputTGO.setText('');
+              minDeleteIndex = charIndex + 1; // first character of next word
+            }
             // Style and animate display
             sentenceByChar[charIndex].setFill(success.color);
             if (this.playerNumber === 1) {
@@ -333,6 +344,11 @@ class GameScene extends Phaser.Scene {
           charIndex += 1;
         }
       }
+      console.log('AFTER');
+      console.log(`charIndex:${charIndex}`);
+      console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
+      console.log(`minDeleteIndex:${minDeleteIndex}`);
+      console.log('----------------------------------------');
     });
   }
 

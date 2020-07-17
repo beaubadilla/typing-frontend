@@ -8,7 +8,7 @@ function addTGO(context, x, y, z) {
   x = context.add.text(((1300/2) - 100), 0, `Starts in`);
   y = context.add.text(1150, 0, 'WPM: -', { fontSize: '30px' });
   z = context.add.text(0, 300, '', style);
-  context.add.text(300, 400, 'HELPER.JS', { fontSize: '30px' });
+  return [x, y, z];
 }
 
 export { addTGO };
