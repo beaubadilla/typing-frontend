@@ -127,5 +127,5 @@ git clone https://github.com/beaubadilla/typing-frontend.git
 Beau Jayme De Guzman Badilla - beau.badilla@gmail.com - [LinkedIn](https://www.linkedin.com/in/beau-jayme-badilla/)
 
 
-[typing-frontend-1-screenshot]: /readme-typing-frontend1.jpg
-[typing-frontend-2-screenshot]: /readme-typing-frontend2.jpg
+[typing-frontend-1-screenshot]: /readme-typing-frontend-1.jpg
+[typing-frontend-2-screenshot]: /readme-typing-frontend-2.jpg
