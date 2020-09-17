@@ -149,11 +149,11 @@ class GameScene extends Phaser.Scene {
   
   //init variables, define animations & sounds, and display assets
   create(){
-    let socket = io('http://localhost:3000/');
-    // let socket = io('https://floating-spire-65360.herokuapp.com/');
+    // let socket = io('http://localhost:3000/');
+    let socket = io('https://floating-spire-65360.herokuapp.com/');
 
     // Flags
-    let gameStart = true, isTimeRunning = false; // TODO: change gameStart to falsey, only truthy for testing
+    let gameStart = false, isTimeRunning = false; // TODO: change gameStart to falsey, only truthy for testing
 
     // Styling
     const style = {
@@ -165,7 +165,7 @@ class GameScene extends Phaser.Scene {
     const fail = { color: 'red' };
 
     // Text Game Objects
-    // this.add.text(0, 0, `Room: ${this.roomName}`, { fontSize: '30px' });
+    this.add.text(0, 0, `Room: ${this.roomName}`, { fontSize: '30px' });
     // let timeStartTGO = this.add.text(((CANVAS_WIDTH/2) - 100), 0, `Starts in`);
     // let wpmTGO = this.add.text(1150, 0, 'WPM: -', { fontSize: '30px' });
     // let userInputTGO = this.add.text(0, 300, '', style);
@@ -209,6 +209,7 @@ class GameScene extends Phaser.Scene {
               secondsUntilStart -= 1;
               timeStartTGO.setText(`Starting in ${secondsUntilStart}`);
             } else {
+              socket.emit('game-starting');
               gameStart = true;
               isTimeRunning = false;
             }
@@ -277,11 +278,11 @@ class GameScene extends Phaser.Scene {
     let minDeleteIndex = 0;
     // *Must use document.addEventListener, instead of Phaser's keyboard.on(), because it handles fast typing elegantly
     document.addEventListener('keydown', (event) => {
-      console.log(`key:${event.key}`);
-      console.log('BEFORE');
-      console.log(`charIndex:${charIndex}`);
-      console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
-      console.log(`minDeleteIndex:${minDeleteIndex}`);
+      // console.log(`key:${event.key}`);
+      // console.log('BEFORE');
+      // console.log(`charIndex:${charIndex}`);
+      // console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
+      // console.log(`minDeleteIndex:${minDeleteIndex}`);
       let userKeyInput = event.key;
       
       // Only accept keyboard input of letters, numbers, and special characters
@@ -344,11 +345,11 @@ class GameScene extends Phaser.Scene {
           charIndex += 1;
         }
       }
-      console.log('AFTER');
-      console.log(`charIndex:${charIndex}`);
-      console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
-      console.log(`minDeleteIndex:${minDeleteIndex}`);
-      console.log('----------------------------------------');
+      // console.log('AFTER');
+      // console.log(`charIndex:${charIndex}`);
+      // console.log(`firstIncorrect:${JSON.stringify(firstIncorrect)}`);
+      // console.log(`minDeleteIndex:${minDeleteIndex}`);
+      // console.log('----------------------------------------');
     });
   }
 
@@ -358,6 +359,22 @@ class GameScene extends Phaser.Scene {
   
 }
 
+class EndScene extends Phaser.Scene {
+  constructor() {
+    super("endScene");
+  }
+  preload () {
+
+  }
+
+  create () {
+
+  }
+
+  update () {
+
+  }
+}
 let config = {
   width: CANVAS_WIDTH,
   height: CANVAS_HEIGHT,
@@ -365,7 +382,7 @@ let config = {
   physics: {
     default: "arcade"
   },
-  scene: [StartScene, GameScene],
+  scene: [StartScene, GameScene, EndScene],
   type: Phaser.AUTO,
   dom: {
     createContainer: true
