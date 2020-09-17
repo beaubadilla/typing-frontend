@@ -34,8 +34,8 @@ Libraries/Frameworks:
 
 ### Screenshots
 
-![typing-frontend-1-screenshot](typing-frontend-1-screenshot)
-![typing-frontend-2-screenshot](typing-frontend-2-screenshot)
+![typing-frontend-1-screenshot][typing-frontend-1-screenshot]
+![typing-frontend-2-screenshot][typing-frontend-2-screenshot]
 
 ### Code Snippets
 
