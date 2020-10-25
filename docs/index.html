@@ -6,9 +6,14 @@
     <link rel="shortcut icon" href="#"><!-- resolve favicon error-->
 
     <script src="https://cdn.jsdelivr.net/npm/phaser@3.23.0/dist/phaser-arcade-physics.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css"> -->
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css?family=Source+Sans+Pro|Hind">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/light.css">
+    <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <div class="container">
+    <!-- <div class="container">
       <div class="col">
         <h1 style="color:black;">Type Racing Game</h1>
       </div>
@@ -17,8 +22,63 @@
           <div id="gameContainer">
           </div>
       </div>
+    </div> -->
+    <div style="display:flex; flex-direction: column; align-items: center;">
+      <h1 id="title" style="margin-bottom: 50px; font-family: Source Sans Pro">Type Racing Game</h1>
+
+      <div id="gameContainer"></div>
+
+      <div id="instructions" style="background: #f8f8f8; text-align:center; max-width: 70vw; margin: 3rem 0; font-family: Hind">
+        <h2>How to Play</h2>
+        <!-- Tab links -->
+        <div class="tab" style="display:flex; justify-content: center; align-items: center;">
+          <button class="tablinks" onclick="openTab(event, 'create')">Creating a room</button>
+          <button class="tablinks" onclick="openTab(event, 'join')">Joining a room</button>
+        </div>
+
+        <!-- Tab content -->
+        <div id="create" class="tabcontent">
+          <h3>CREATING A ROOM</h3>
+          <p>(1) Click on "Create a private a room"</p>
+          <p>(2) Share the room name displayed on the top left</p>
+          <p>(3) Wait for the timer at the top to count down</p>
+          <p>(4) First to complete the provided text wins!</p>
+        </div>
+
+        <div id="join" class="tabcontent">
+          <h3>JOINING A ROOM</h3>
+          <p>(1) Click on "Join a room"</p>
+          <p>(2) Type the room name </p>
+          <p>(3) Click on "enter" </p>
+          <p>(3) Wait for the timer at the top to count down </p>
+          <p>(4) First to complete the provided text wins! </p>
+        </div>
+      </div>
     </div>
 
+    <footer style="display:flex; flex-direction:column; align-items:center;">
+      <span>Built with Phaser 3, Express, Socket.io</span>
+      <span>@2020 Beau Jayme De Guzman Badilla</span>
+      <div style="display:flex;">
+        <span style="margin:0 5px"><a>LinkedIn</a></span>
+        <span style="margin:0 5px"><a>GitHub</a></span>
+      </div>
+    </footer>
     <script src="bundle.js"></script>
+    <script>
+      function openTab(evt, cityName) {
+        var i, tabcontent, tablinks;
+        tabcontent = document.getElementsByClassName("tabcontent");
+        for (i = 0; i < tabcontent.length; i++) {
+          tabcontent[i].style.display = "none";
+        }
+        tablinks = document.getElementsByClassName("tablinks");
+        for (i = 0; i < tablinks.length; i++) {
+          tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+        document.getElementById(cityName).style.display = "block";
+        evt.currentTarget.className += " active";
+      }
+    </script>
   </body>
 </html>
